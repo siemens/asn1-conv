@@ -1,0 +1,349 @@
+-- @file schema.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+Uuid ::= UTF8String(SIZE(36))
+
+AppVersion ::= UTF8String(PATTERN "|V[0-9]#(1,2)\.[0-9]#(1,2)")
+
+DomainName ::= UTF8String(SIZE(1..255) ^ PATTERN "([a-z]([a-z0-9-]#(0,61)[a-z0-9])?\.)+[a-z0-9][a-z0-9-]#(0,61)[a-z0-9]")
+
+Uri ::= UTF8String(SIZE(3..256))
+
+Ipv4Address ::= UTF8String(PATTERN "(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.)#3([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])")
+
+Ipv6Address ::= UTF8String(PATTERN "((:|(0?|([1-9a-f][0-9a-f]#(0,3)))):)((0?|([1-9a-f][0-9a-f]#(0,3))):)#(0,6)(:|(0?|([1-9a-f][0-9a-f]#(0,3))))")
+
+IpAddress ::= CHOICE {
+  v4 Ipv4Address,
+  v6 Ipv6Address
+}
+
+DataComm ::= ENUMERATED {
+  basic,
+  critical
+}
+
+VideoComm ::= ENUMERATED {
+  basic,
+  critical
+}
+
+AppCategory ::= ENUMERATED {
+  etcs,
+  ato,
+  cabRadio
+}
+
+StaticId ::= UTF8String(SIZE(3..256))
+
+DynamicId ::= Uuid
+
+AppVersionList ::= SET OF AppVersion
+
+CouplingMode ::= ENUMERATED {
+  tight,
+  loose
+}
+
+ErrorCause ::= UTF8String(
+  "ILL_FORMED_REQUEST" |
+  "UNAUTH_UNKNOWN_APP_CATEGORY" |
+  "UNREGISTERED" |
+  "UNKNOWN_NOTIF_CHANNEL" |
+  "MCX_ENDPOINT_NOT_REACHABLE" |
+  "APPLICATION_ENDPOINT_NOT_REACHABLE" |
+  "UNKNOWN_SESSION" |
+  "NO_OPENED_SESSION" |
+  "APP_NOT_OB_TERMINATED" |
+  "REMOTE_ENDPOINT_DECLINED" |
+  "CONFLICTING_LOC_REPORT_REQUEST"
+)
+
+ErrorDetail ::= UTF8String(
+  "Malformed registration request." |
+  "Malformed registration due to wrong application category." |
+  "Unregistered; local binding required." |
+  "Resource not found; unknown notification channel." |
+  "MCX endpoint is not reachable." |
+  "MCX endpoint is reachable but application endpoint is not reachable." |
+  "Unknown session." |
+  "No session is opened yet for this application." |
+  "Application does not support OB-terminated sessions." |
+  "The remote end-point declined the session request." |
+  "This newly request location report is conflicting with the ongoing ones."
+)
+
+ErrorUriResource ::= Uri
+
+SessionId ::= Uuid
+
+SessionIds ::= SET OF SessionId
+
+RemoteAddress ::= Uri
+
+SessionStatus ::= ENUMERATED {
+  succeeded,
+  failed,
+  declined
+}
+
+NextHopIPAddress ::= IpAddress
+
+DestApplicationIPAddress ::= IpAddress
+
+CommunicationCategory ::= CHOICE {
+  dataComm DataComm,
+  videoComm VideoComm
+}
+
+LocalAppIPAddress ::= IpAddress
+
+SessionOriginator ::= ENUMERATED {
+  localApplication,
+  remoteApplication
+}
+
+Period ::= INTEGER(0..120)
+
+Distance ::= INTEGER(1..MAX)
+
+LocReportType ::= ENUMERATED {
+  periodicLocRep,
+  travelledDistanceLocRep,
+  cellChangeLocRep,
+  queryLocRep
+}
+
+LocReportId ::= INTEGER
+
+LocRepEventId ::= INTEGER
+
+GeneralEventId ::= INTEGER
+
+GeneralEventType ::= ENUMERATED {
+  openSessionFinalAnswer,
+  incomingSession,
+  ftdAvlNotif,
+  fsdAvlNotif
+}
+
+FtdAVL ::= BOOLEAN
+
+FsdAVL ::= BOOLEAN
+
+NWTransition ::= BOOLEAN
+
+Recipient ::= SET {
+  remoteAddress IpAddress,
+  communicationCategory CommunicationCategory
+}
+
+RecipientsList ::= SET OF Recipient
+
+IncomingSessionAppResponse ::= ENUMERATED {
+  accepted,
+  rejected
+}
+
+NotifChannel ::= ENUMERATED {
+  general,
+  location
+}
+
+TrainComponent ::= ENUMERATED {
+  front,
+  rear
+}
+
+ServingCellId ::= UTF8String(PATTERN "^[0-9]#3-[0-9]#(2,3)\.[A-Fa-f0-9]#9")
+
+Longitude ::= INTEGER(-8388608..8388607)
+
+Latitude ::= INTEGER(-8388608..8388607)
+
+HorizontalAccuracy ::= INTEGER(-2147483648..2147483647)
+
+TimeStamp ::= DATE-TIME
+
+ErrorData ::= SET {
+  uriResource ErrorUriResource,
+  cause ErrorCause,
+  detail ErrorDetail
+}
+
+VersionsData ::= SET {
+  supportedVersionsList AppVersionList
+}
+
+VersionsErrorData ::= ErrorData
+
+RegisterData ::= SET {
+  appCategory AppCategory,
+  staticId StaticId,
+  couplingMode CouplingMode DEFAULT loose
+}
+
+RegisteredData ::= SET {
+  dynamicId DynamicId
+}
+
+RegisterErrorData ::= ErrorData
+
+DeRegisterErrorData ::= ErrorData
+
+GenNotifErrorData ::= ErrorData
+
+GeneralEventTypes ::= CHOICE {
+  openSessionFinalAnswerNotifSuccess OpenSessionFinalAnswerNotifSuccessData,
+  openSessionFinalAnswerNotifDeclined OpenSessionFinalAnswerNotifDeclinedData,
+  openSessionFinalAnswerNotifFailed OpenSessionFinalAnswerNotifFailedData,
+  incomingSessionNotif IncomingSessionNotifData,
+  ftdAvlNotif FtdAvlNotifData,
+  fsdAvlNotif FsdAvlNotifData,
+  locNotifReq LocNotifReqData,
+  locNotifRes LocNotifResData,
+  locNotifError LocNotifErrorData
+}
+
+OpenSessionFinalAnswerNotifSuccessData ::= SET {
+  generalEventType GeneralEventType,
+  sessionId SessionId,
+  nextHopOBIPAddress IpAddress,
+  destApplicationIPAddress IpAddress
+}
+
+OpenSessionFinalAnswerNotifDeclinedData ::= SET {
+  sessionId SessionId,
+  cause ErrorCause,
+  detail ErrorDetail
+}
+
+OpenSessionFinalAnswerNotifFailedData ::= SET {
+  cause ErrorCause,
+  detail ErrorDetail
+}
+
+IncomingSessionNotifData ::= SET {
+  remoteAddress IpAddress,
+  communicationCategory CommunicationCategory,
+  sessionId SessionId
+}
+
+FtdAvlNotifData ::= SET {
+  ftdAVL FtdAVL,
+  nwTransition NWTransition,
+  domain DomainName OPTIONAL
+} (WITH COMPONENTS {
+  ftdAVL(FALSE),
+  nwTransition(FALSE),
+  domain ABSENT
+} | WITH COMPONENTS {
+  ftdAVL(FALSE),
+  nwTransition(TRUE),
+  domain ABSENT
+} | WITH COMPONENTS {
+  ftdAVL(TRUE),
+  nwTransition(FALSE),
+  domain ABSENT
+} | WITH COMPONENTS {
+  ftdAVL(TRUE),
+  nwTransition(TRUE),
+  domain PRESENT
+})
+
+FsdAvlNotifData ::= SET {
+  fsdAVL FsdAVL,
+  nwTransition NWTransition
+}
+
+LocNotifReqData ::= SET {
+  locReportType LocReportType,
+  period Period OPTIONAL,
+  distance Distance OPTIONAL
+} (WITH COMPONENTS {
+  locReportType(queryLocRep|cellChangeLocRep),
+  period ABSENT,
+  distance ABSENT
+} | WITH COMPONENTS {
+  locReportType(periodicLocRep),
+  period PRESENT,
+  distance ABSENT
+} | WITH COMPONENTS {
+  locReportType(travelledDistanceLocRep),
+  period ABSENT,
+  distance PRESENT
+})
+
+LocNotifResData ::= SET {
+  locReportId LocReportId
+}
+
+LocNotifErrorData ::= ErrorData
+
+LocReportNotifData ::= SET {
+  trainComponent TrainComponent,
+  servingCellId ServingCellId,
+  longitude Longitude,
+  latitude Latitude,
+  horizontalAccuracy HorizontalAccuracy,
+  timeStamp TimeStamp
+}
+
+UnsubNotifChannelErrorData ::= ErrorData
+
+UnsubNotifLocRepErrorData ::= ErrorData
+
+OBSessionOpenData ::= SET {
+  localAppIPAddress IpAddress,
+  recipientsList SET SIZE(1) OF Recipient
+}
+
+OBSessionOpenedData ::= SET {
+  sessionId SessionId
+}
+
+OBSessionOpenErrorData ::= ErrorData
+
+SessionStatusData ::= SET {
+  sessionOriginator SessionOriginator,
+  communicationCategory CommunicationCategory,
+  nextHopIPAddress IpAddress,
+  destApplicationIPAddress IpAddress,
+  localAppIPAddress IpAddress,
+  remoteAddress IpAddress
+}
+
+SessionStatusErrorData ::= ErrorData
+
+SessionsListData ::= SET {
+  sessionIds SessionIds
+}
+
+SessionsListErrorData ::= ErrorData
+
+SessionClosedData ::= SET {
+  sessionOriginator SessionOriginator
+}
+
+SessionCloseErrorData ::= ErrorData
+
+IncomingSessionNotificationResponseData ::= SET {
+  incomingSessionAppResponse IncomingSessionAppResponse,
+  localAppIPAddress IpAddress OPTIONAL
+} (WITH COMPONENTS {
+  incomingSessionAppResponse(accepted),
+  localAppIPAddress PRESENT
+} | WITH COMPONENTS {
+  incomingSessionAppResponse(rejected),
+  localAppIPAddress ABSENT
+})
+
+IncomingSessionNotificationResponseErrorData ::= ErrorData
+
+KeepAliveErrorData ::= ErrorData
+
+END

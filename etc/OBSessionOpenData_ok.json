@@ -1,0 +1,11 @@
+{
+  "localAppIPAddress": {"v4": "127.0.0.1"},
+  "recipientsList": [
+    {
+      "remoteAddress": {"v4": "192.168.0.1"},
+      "communicationCategory": {
+          "dataComm": "critical"
+      }
+    }
+  ]
+}

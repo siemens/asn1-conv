@@ -1,0 +1,15 @@
+-- @file numType.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+Num ::= REAL
+NumRange1 ::= REAL(1.1 .. 120.1)
+NumRange2 ::= REAL(MIN .. 120.1)
+NumRange3 ::= REAL(0.1 .. MAX)
+NumRange4 ::= REAL(3.1 .. 10.1 | 12.3)
+NumRange5 ::= REAL(156.56 | 658.2)
+
+END

@@ -1,0 +1,28 @@
+-- @file set.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+ID ::= INTEGER
+UUID ::= OCTET STRING
+
+Sequence1 ::= SET {
+	id ID,
+	uuid UUID OPTIONAL
+}
+
+Sequence2 ::= SET {
+	id ID,
+	uuid UUID,
+	other SET {
+		byte INTEGER(0..255)
+	}
+}
+
+Sequence3 ::= SET {
+	field SET (SIZE (9..9), ...) OF BOOLEAN
+}
+
+END

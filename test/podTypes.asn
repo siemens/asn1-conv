@@ -1,0 +1,13 @@
+-- @file podTypes.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+Null ::= NULL
+Boolean ::= BOOLEAN
+BooleanT ::= BOOLEAN(TRUE)
+BooleanF ::= BOOLEAN(FALSE)
+
+END

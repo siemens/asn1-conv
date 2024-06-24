@@ -1,0 +1,13 @@
+*~
+*.bkp
+*.bak
+*#
+*.o
+*.obj
+*.a
+*.lib
+*.exe
+*.user
+*.lock
+build
+__pycache__

@@ -1,0 +1,26 @@
+[tool.poetry]
+
+name = "asn1-conv"
+version = "1.0.0"
+description = "Collection of tools for ASN.1 schema conversion."
+readme = "README.md"
+license = "MIT"
+authors = [ "Daniel Starke <daniel.starke@siemens.com>" ]
+packages = [
+	{ include = "src/asn1Conv.py" },
+	{ include = "src/asn1Test.py" },
+]
+include = [
+	{ path = "LICENSE" }
+]
+
+[tool.poetry.dependencies]
+
+python = "^3.12"
+asn1tools = "==0.166.0"
+PyYAML = "~6.0"
+
+[tool.poetry.scripts]
+
+asn1Conv = "src.asn1Conv:main"
+asn1Test = "src.asn1Test:main"

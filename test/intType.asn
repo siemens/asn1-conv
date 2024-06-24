@@ -1,0 +1,15 @@
+-- @file intType.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+Int ::= INTEGER
+IntRange1 ::= INTEGER(1..120)
+IntRange2 ::= INTEGER(MIN..120)
+IntRange3 ::= INTEGER(0..MAX)
+IntRange4 ::= INTEGER(3..10 | 12)
+IntRange5 ::= INTEGER(156 | 658)
+
+END

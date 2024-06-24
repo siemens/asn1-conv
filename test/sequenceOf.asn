@@ -1,0 +1,18 @@
+-- @file sequenceOf.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+ID ::= INTEGER
+UUID ::= OCTET STRING
+
+SeqOf1 ::= SEQUENCE OF INTEGER
+SeqOf2 ::= SEQUENCE OF ID
+SeqOf3 ::= SEQUENCE (SIZE(3..10)) OF UUID
+SeqOf4 ::= SEQUENCE (SIZE(MIN..10)) OF UUID
+SeqOf5 ::= SEQUENCE (SIZE(3..MAX)) OF UUID
+SeqOf6 ::= SEQUENCE (SIZE(3..10 | 12)) OF UUID
+
+END

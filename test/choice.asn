@@ -1,0 +1,24 @@
+-- @file choice.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+ID ::= INTEGER
+UUID ::= OCTET STRING
+
+Choice1 ::= CHOICE {
+	id ID,
+	uuid UUID
+}
+
+Choice2 ::= CHOICE {
+	id ID,
+	uuid UUID,
+	other SEQUENCE {
+		byte INTEGER(0..255)
+	}
+}
+
+END

@@ -1,0 +1,34 @@
+-- @file sequence.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+ID ::= INTEGER
+UUID ::= OCTET STRING
+OneTwo ::= ENUMERATED {one, two}
+
+Sequence1 ::= SEQUENCE {
+	id ID,
+	uuid UUID OPTIONAL
+}
+
+Sequence2 ::= SEQUENCE {
+	id ID,
+	uuid UUID,
+	other SEQUENCE {
+		byte INTEGER(0..255)
+	}
+}
+
+Sequence3 ::= SEQUENCE {
+	field SEQUENCE (SIZE (9..9), ...) OF BOOLEAN
+}
+
+Sequence4 ::= SEQUENCE {
+	id ID,
+	num OneType DEFAULT one
+}
+
+END

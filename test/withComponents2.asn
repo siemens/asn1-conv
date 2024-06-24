@@ -1,0 +1,43 @@
+-- @file withComponents2asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+Bool ::= BOOLEAN
+String ::= UTF8String
+Enum ::= ENUMERATED { one, two, three }
+
+Enum1 ::= Enum(two|three)
+
+Set1 ::= SET {
+	a BOOLEAN,
+	b UTF8String OPTIONAL,
+	c ENUMERATED { one, two, three }(one|two)
+} (WITH COMPONENTS {
+	...,
+	a(TRUE),
+	b PRESENT,
+	c(one)
+} | WITH COMPONENTS {
+	...,
+	a(FALSE),
+	b ABSENT
+})
+
+Set2 ::= SET {
+	a Bool,
+	b String OPTIONAL,
+	c Enum1(two)
+} (WITH COMPONENTS {
+	...,
+	a(TRUE),
+	b PRESENT
+} | WITH COMPONENTS {
+	...,
+	a(FALSE),
+	b ABSENT
+})
+
+END

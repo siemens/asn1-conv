@@ -1,0 +1,30 @@
+# @file .pylintrc
+# @author Daniel Starke
+# @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+[MASTER]
+disable = consider-using-f-string
+
+[MAIN]
+max-module-lines = 15000
+
+[BASIC]
+argument-naming-style = camelCase
+attr-naming-style = camelCase
+class-attribute-naming-style = camelCase
+class-const-naming-style = UPPER_CASE
+class-naming-style = PascalCase
+const-naming-style = camelCase
+function-naming-style = camelCase
+inlinevar-naming-style = camelCase
+method-naming-style = camelCase
+module-naming-style = camelCase
+variable-naming-style = camelCase
+
+[FORMAT]
+max-line-length = 180
+indent-string = "\t"
+
+[DESIGN]
+max-branches = 15

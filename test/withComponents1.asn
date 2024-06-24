@@ -1,0 +1,76 @@
+-- @file withComponents1.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+AbcSeq ::= SEQUENCE {
+	a INTEGER(3|5|20),
+	b INTEGER(4..6),
+	c INTEGER
+}
+AbsSeqX ::= AbcSeq (WITH COMPONENTS {
+	b(4|6|21),
+	c(3|5)
+})
+
+AbcSet ::= SET {
+	a INTEGER,
+	b INTEGER,
+	c INTEGER
+}
+
+AbcChoice ::= CHOICE {
+	a INTEGER,
+	b INTEGER,
+	c INTEGER
+}
+
+WithComponents1 ::= SET {
+	a INTEGER,
+	b INTEGER OPTIONAL
+} (WITH COMPONENTS {
+	...,
+	a(0..2|6..MAX),
+	b ABSENT
+} | WITH COMPONENTS {
+	...,
+	a(3..5),
+	b PRESENT
+})
+
+WithComponents2 ::= SET {
+	a INTEGER,
+	b INTEGER,
+	c INTEGER
+} (WITH COMPONENTS {
+	a, c
+} | WITH COMPONENTS {
+	b, c
+})
+
+WithComponents3 ::= CHOICE {
+	a INTEGER,
+	b INTEGER,
+	c INTEGER,
+	d INTEGER
+} (WITH COMPONENTS {
+	a, c
+} | WITH COMPONENTS {
+	b, c
+})
+
+WithComponents4 ::= AbcSeq (WITH COMPONENTS { a, c })
+WithComponents5 ::= AbcSet (WITH COMPONENTS { a, c })
+WithComponents6 ::= AbcChoice (WITH COMPONENTS { a, c })
+WithComponents7 ::= AbcSet (WITH COMPONENTS { a, c } | WITH COMPONENTS { b, c })
+WithComponents8 ::= AbcSet (WITH COMPONENTS { a, c } UNION WITH COMPONENTS { b, c })
+WithComponents9 ::= AbcSeq (WITH COMPONENTS { a, c(2|5|7..9) })
+WithComponents10 ::= SET {
+	a UTF8String(SIZE(1..6)),
+	b UTF8String("42" | "23" | FROM("0".."9") | SIZE(2) | SIZE(2..4)),
+	c INTEGER
+} (WITH COMPONENTS { ..., a("42" | "23" | FROM("1".."4") | SIZE(2) | SIZE(4)) })
+
+END

@@ -1,0 +1,56 @@
+-- @file componentsOf.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+AbcSeq ::= SEQUENCE {
+	a INTEGER,
+	b INTEGER,
+	c INTEGER
+}
+
+AbcSet ::= SET {
+	a INTEGER,
+	b INTEGER,
+	c INTEGER
+}
+
+ComponentsOf1 ::= SEQUENCE {
+	COMPONENTS OF AbcSeq,
+	d INTEGER,
+	e INTEGER
+}
+
+ComponentsOf2 ::= SEQUENCE {
+	d INTEGER,
+	COMPONENTS OF AbcSeq,
+	e INTEGER
+}
+
+ComponentsOf3 ::= SEQUENCE {
+	d INTEGER,
+	e INTEGER,
+	COMPONENTS OF AbcSeq
+}
+
+ComponentsOf4 ::= SEQUENCE {
+	COMPONENTS OF AbcSet,
+	d INTEGER,
+	e INTEGER
+}
+
+ComponentsOf5 ::= SEQUENCE {
+	d INTEGER,
+	COMPONENTS OF AbcSet,
+	e INTEGER
+}
+
+ComponentsOf6 ::= SEQUENCE {
+	d INTEGER,
+	e INTEGER,
+	COMPONENTS OF AbcSet
+}
+
+END

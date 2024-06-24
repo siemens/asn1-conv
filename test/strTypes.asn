@@ -1,0 +1,20 @@
+-- @file strTypes.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+Str ::= UTF8String
+StrRange1 ::= UTF8String(SIZE(0..120))
+StrRange2 ::= UTF8String(SIZE(MIN..120))
+StrRange3 ::= GraphicString(SIZE(0..MAX))
+StrRange4 ::= UTF8String(FROM("a".."z"))
+StrRange5 ::= UTF8String(FROM("0123456789" | "#" | "+"))(SIZE(3..10 | 12))
+StrRange6 ::= VisibleString(SIZE(2|5|7..9) ^ FROM ("A".."Z"))
+StrRange7 ::= VisibleString(PATTERN "k\N{Lu}j(a[0-9])+d#(23,41)fg" | PATTERN "jk.rg" | "gr" | PATTERN "ab[0-9]#5c")
+StrRange8 ::= VisibleString("ABC" | "XYZ")
+
+StrData ::= OCTET STRING
+
+END

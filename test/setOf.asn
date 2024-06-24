@@ -1,0 +1,18 @@
+-- @file setOf.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+ID ::= INTEGER
+UUID ::= OCTET STRING
+
+SetOf1 ::= SET OF INTEGER
+SetOf2 ::= SET OF ID
+SetOf3 ::= SET (SIZE(3..10)) OF UUID
+SetOf4 ::= SET (SIZE(MIN..10)) OF UUID
+SetOf5 ::= SET (SIZE(3..MAX)) OF UUID
+SetOf6 ::= SET (SIZE(3..10 | 12)) OF UUID
+
+END

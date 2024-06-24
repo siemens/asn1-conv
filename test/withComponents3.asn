@@ -1,0 +1,36 @@
+-- @file withComponents3.asn --
+-- @author Daniel Starke --
+-- @copyright (C) Copyright Siemens Mobility GmbH, 2024. All rights reserved. --
+-- SPDX-License-Identifier: MIT --
+World-Schema DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+DomainName ::= UTF8String(SIZE(1..255) ^ PATTERN "([a-z0-9]([a-z0-9-]#(0,61)[a-z0-9])?\.)+[a-z0-9][a-z0-9-]#(0,61)[a-z0-9]")
+
+FlagA ::= BOOLEAN
+FlagB ::= BOOLEAN
+SpecialDomain ::= DomainName(SIZE(1..63))
+
+Data ::= SET {
+  a FlagA,
+  b FlagB,
+  domain SpecialDomain OPTIONAL
+} (WITH COMPONENTS {
+  a(FALSE),
+  b(FALSE),
+  domain ABSENT
+} | WITH COMPONENTS {
+  a(FALSE),
+  b(TRUE),
+  domain ABSENT
+} | WITH COMPONENTS {
+  a(TRUE),
+  b(FALSE),
+  domain ABSENT
+} | WITH COMPONENTS {
+  a(TRUE),
+  b(TRUE),
+  domain PRESENT
+})
+
+END
